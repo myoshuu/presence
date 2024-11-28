@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  name       String?
+  role       String
+  password   String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Guru {
+  nip        Int      @id
+  nama       String
+  alamat     String
+  no_hp      String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  kelas      Kelas[]
+}
+
+model OrangTua {
+  id         Int      @id @default(autoincrement())
+  nama       String
+  alamat     String
+  no_hp      String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  siswa      Siswa[]
+}
+
+model Kelas {
+  id         Int      @id @default(autoincrement())
+  nama       String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  guru       Guru     @relation(fields: [guru_nip], references: [nip])
+  guru_nip   Int
+  siswa      Siswa[]
+}
+
+model Siswa {
+  nis        Int       @id
+  nama       String
+  alamat     String
+  no_hp      String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  lists      List[]
+  Kelas      Kelas?    @relation(fields: [kelasId], references: [id])
+  OrangTua   OrangTua? @relation(fields: [orangTuaId], references: [id])
+  orangTuaId Int?
+  kelasId    Int?
+}
+
+model List {
+  id         Int      @id @default(autoincrement())
+  nama       String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  siswa      Siswa    @relation(fields: [siswa_id], references: [nis])
+  siswa_id   Int
+  Task       Task[]
+}
+
+model Task {
+  id         Int      @id @default(autoincrement())
+  nama       String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  list       List     @relation(fields: [list_id], references: [id])
+  list_id    Int
+}
