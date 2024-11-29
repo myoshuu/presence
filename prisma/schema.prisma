@@ -15,8 +15,8 @@ datasource db {
 
 model User {
   id         Int      @id @default(autoincrement())
-  email      String   @unique
   name       String?
+  username   String   @unique
   role       String
   password   String
   created_at DateTime @default(now())
@@ -28,9 +28,9 @@ model Guru {
   nama       String
   alamat     String
   no_hp      String
+  kelas      Kelas[]
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  kelas      Kelas[]
 }
 
 model OrangTua {
@@ -38,9 +38,9 @@ model OrangTua {
   nama       String
   alamat     String
   no_hp      String
+  siswa      Siswa[]
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  siswa      Siswa[]
 }
 
 model Kelas {
@@ -72,14 +72,16 @@ model List {
   nama       String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  siswa      Siswa    @relation(fields: [siswa_id], references: [nis])
-  siswa_id   Int
+  siswa      Siswa    @relation(fields: [siswa_nis], references: [nis])
+  siswa_nis  Int
   Task       Task[]
 }
 
 model Task {
   id         Int      @id @default(autoincrement())
   nama       String
+  deskripsi  String
+  deadline   DateTime
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   list       List     @relation(fields: [list_id], references: [id])
