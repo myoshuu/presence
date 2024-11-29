@@ -1,16 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
+import generateToken from "@/utils/jwt";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
-
-const generateToken = (nama: string, role: string) => {
-  const payload = { nama, role };
-  return jwt.sign(payload, process.env.JWT_SECRET as string, {
-    expiresIn: "1h",
-  });
-};
 
 export const qrLogin = async (req: NextApiRequest, res: NextApiResponse) => {
   const nis = req.body;
