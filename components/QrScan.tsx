@@ -7,18 +7,16 @@ interface QRScannerProps {
 
 const QRScanner: React.FC<QRScannerProps> = ({ setQrCode }) => {
   const [cameraError, setCameraError] = useState<string | null>(null);
-  const [qrCode, setLocalQrCode] = useState<string | null>(null); // Track qrCode locally in the component
+  const [qrCode, setLocalQrCode] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const mediaStreamRef = useRef<MediaStream | null>(null); // To store the media stream reference
+  const mediaStreamRef = useRef<MediaStream | null>(null);
 
   useEffect(() => {
     const codeReader = new BrowserMultiFormatReader();
 
-    // Log available video devices
     navigator.mediaDevices
       .enumerateDevices()
       .then((devices) => {
-        console.log(devices); // Log devices to check if a camera is available
         const videoDevices = devices.filter(
           (device) => device.kind === "videoinput"
         );
@@ -28,11 +26,8 @@ const QRScanner: React.FC<QRScannerProps> = ({ setQrCode }) => {
           return;
         }
 
-        // Choose the first video device
         const videoDeviceId = videoDevices[0].deviceId;
-        console.log(`Using camera device: ${videoDeviceId}`);
 
-        // Start the camera stream
         navigator.mediaDevices
           .getUserMedia({
             video: {
@@ -40,11 +35,9 @@ const QRScanner: React.FC<QRScannerProps> = ({ setQrCode }) => {
             },
           })
           .then((stream) => {
-            // Store the stream to stop later
             mediaStreamRef.current = stream;
             videoRef.current!.srcObject = stream;
 
-            // Start decoding QR code from video stream
             codeReader.decodeFromVideoDevice(
               videoDeviceId,
               videoRef.current!,
@@ -52,9 +45,9 @@ const QRScanner: React.FC<QRScannerProps> = ({ setQrCode }) => {
                 if (result) {
                   const scannedCode = result.getText();
                   if (scannedCode && scannedCode !== qrCode) {
-                    setLocalQrCode(scannedCode); // Store the scanned QR code locally
-                    setQrCode(scannedCode); // Update the parent component state
-                    stopCamera(); // Stop the camera after successful scan
+                    setLocalQrCode(scannedCode);
+                    setQrCode(scannedCode);
+                    stopCamera();
                   }
                 }
                 if (err) {
@@ -72,16 +65,14 @@ const QRScanner: React.FC<QRScannerProps> = ({ setQrCode }) => {
       });
 
     return () => {
-      // Ensure to stop the camera when component is unmounted
       stopCamera();
     };
-  }, [setQrCode, qrCode]); // Only run effect when qrCode changes or setQrCode is updated
+  }, [setQrCode, qrCode]);
 
-  // Function to stop the camera
   const stopCamera = () => {
     if (mediaStreamRef.current) {
       const tracks = mediaStreamRef.current.getTracks();
-      tracks.forEach((track) => track.stop()); // Stop each track (camera stream)
+      tracks.forEach((track) => track.stop());
       mediaStreamRef.current = null;
     }
   };
@@ -94,10 +85,8 @@ const QRScanner: React.FC<QRScannerProps> = ({ setQrCode }) => {
         autoPlay
         muted
       />
-      {cameraError && <p style={{ color: "red" }}>{cameraError}</p>}
-      {qrCode && <p>Scanned QR Code: {qrCode}</p>} {/* Display scanned code */}
-      {!qrCode && !cameraError && <p>Scan QR code to proceed...</p>}{" "}
-      {/* When QR code hasn't been scanned yet */}
+      {qrCode && <p className="mt-3 font-medium">Scanned QR Code success</p>}
+      {!qrCode && !cameraError && <p>Scan QR code to proceed...</p>}
     </div>
   );
 };
