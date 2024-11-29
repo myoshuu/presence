@@ -18,6 +18,7 @@ CREATE TABLE `Guru` (
     `nama` VARCHAR(191) NOT NULL,
     `alamat` VARCHAR(191) NOT NULL,
     `no_hp` VARCHAR(191) NOT NULL,
+    `password` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
 
@@ -27,9 +28,11 @@ CREATE TABLE `Guru` (
 -- CreateTable
 CREATE TABLE `OrangTua` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `nik` INTEGER NOT NULL,
     `nama` VARCHAR(191) NOT NULL,
     `alamat` VARCHAR(191) NOT NULL,
     `no_hp` VARCHAR(191) NOT NULL,
+    `password` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
 

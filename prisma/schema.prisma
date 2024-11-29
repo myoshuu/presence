@@ -29,16 +29,19 @@ model Guru {
   alamat     String
   no_hp      String
   kelas      Kelas[]
+  password   String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
 
 model OrangTua {
   id         Int      @id @default(autoincrement())
+  nik        Int      @unique
   nama       String
   alamat     String
   no_hp      String
   siswa      Siswa[]
+  password   String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }

@@ -22,6 +22,7 @@ const main = async () => {
       nama: "Budi",
       alamat: "Jl. Jalan",
       no_hp: "08123456789",
+      password: await bcrypt.hash("guru", 10),
     },
   });
 
@@ -37,9 +38,11 @@ const main = async () => {
   for (const o of data.dataOrangTua) {
     const orangTua = await prisma.orangTua.create({
       data: {
+        nik: o.nik,
         nama: o.nama,
         alamat: o.alamat,
         no_hp: o.no_hp,
+        password: await bcrypt.hash(o.nama.toLowerCase(), 10),
       },
     });
     orangTuaIds.push(orangTua.id);

@@ -27,21 +27,25 @@ const dataSiswa = [
 
 const dataOrangTua = [
   {
+    nik: 123,
     nama: "Budianto",
     alamat: "Jl. Jalan",
     no_hp: "08123456789",
   },
   {
+    nik: 456,
     nama: "Cici",
     alamat: "Jl. Jalan",
     no_hp: "08123456789",
   },
   {
+    nik: 789,
     nama: "Dedi",
     alamat: "Jl. Jalan",
     no_hp: "08123456789",
   },
   {
+    nik: 101,
     nama: "Euis",
     alamat: "Jl. Jalan",
     no_hp: "08123456789",
