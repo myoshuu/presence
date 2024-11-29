@@ -23,6 +23,18 @@ model User {
   updated_at DateTime @updatedAt
 }
 
+model LaporanAbsensi {
+  id         Int      @id @default(autoincrement())
+  siswaId    Int
+  kelasId    Int
+  tanggal    DateTime
+  waktuMasuk DateTime
+  siswa      Siswa    @relation(fields: [siswaId], references: [nis])
+  kelas      Kelas    @relation(fields: [kelasId], references: [id])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
 model Guru {
   nip        Int      @id
   nama       String
@@ -47,27 +59,29 @@ model OrangTua {
 }
 
 model Kelas {
-  id         Int      @id @default(autoincrement())
-  nama       String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  guru       Guru     @relation(fields: [guru_nip], references: [nip])
-  guru_nip   Int
-  siswa      Siswa[]
+  id             Int              @id @default(autoincrement())
+  nama           String
+  created_at     DateTime         @default(now())
+  updated_at     DateTime         @updatedAt
+  guru           Guru             @relation(fields: [guru_nip], references: [nip])
+  guru_nip       Int
+  siswa          Siswa[]
+  LaporanAbsensi LaporanAbsensi[]
 }
 
 model Siswa {
-  nis        Int       @id
-  nama       String
-  alamat     String
-  no_hp      String
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  lists      List[]
-  Kelas      Kelas?    @relation(fields: [kelasId], references: [id])
-  OrangTua   OrangTua? @relation(fields: [orangTuaId], references: [id])
-  orangTuaId Int?
-  kelasId    Int?
+  nis            Int              @id
+  nama           String
+  alamat         String
+  no_hp          String
+  created_at     DateTime         @default(now())
+  updated_at     DateTime         @updatedAt
+  lists          List[]
+  Kelas          Kelas?           @relation(fields: [kelasId], references: [id])
+  OrangTua       OrangTua?        @relation(fields: [orangTuaId], references: [id])
+  orangTuaId     Int?
+  kelasId        Int?
+  LaporanAbsensi LaporanAbsensi[]
 }
 
 model List {

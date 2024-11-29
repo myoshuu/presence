@@ -70,3 +70,24 @@ export const loginOrtu = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(500).json({ message: "System failure!" });
   }
 };
+
+export const loginAdmin = async (req: NextApiRequest, res: NextApiResponse) => {
+  const { username, password } = req.body;
+
+  try {
+    const admin = await prisma.user.findUnique({ where: { username } });
+    if (!admin)
+      return res.status(404).json({ message: "Maaf, kamu bukan admin" });
+
+    const isValid = bcrypt.compare(password, admin.password);
+
+    if (!isValid)
+      return res.status(404).json({ message: "Maaf, password salah" });
+
+    const token = generateToken(admin.username, admin.role);
+    return res.status(200).json({ token, admin });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ message: "System failure!" });
+  }
+};
